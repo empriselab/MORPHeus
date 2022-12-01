@@ -1,0 +1,6 @@
+sensor_msgs/Image img_color
+sensor_msgs/Image img_depth
+sensor_msgs/Image img_aligned
+audio_common_msgs/AudioDataStamped audio_stamped
+geometry_msgs/WrenchStamped ft
+data_collection/StringStamped key

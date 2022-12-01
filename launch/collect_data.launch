@@ -1,0 +1,98 @@
+<!-- -*- xml -*- -->
+
+<launch>
+
+<!--                                            _       
+     /\                                        | |      
+    /  \   _ __ __ _ _   _ _ __ ___   ___ _ __ | |_ ___ 
+   / /\ \ | '__/ _` | | | | '_ ` _ \ / _ \ '_ \| __/ __|
+  / ____ \| | | (_| | |_| | | | | | |  __/ | | | |_\__ \
+ /_/    \_\_|  \__, |\__,_|_| |_| |_|\___|_| |_|\__|___/
+                __/ |                                   
+               |___/                                     
+-->
+
+  <arg name="record_cameras" default="true" />
+  <arg name="record_audio" default="true" />
+  <arg name="record_ft" default="true" />
+  <arg name="record_synced" default="true" />
+  <arg name="disable_record" default="false" />
+
+<!--   _                            _       ______ _ _           
+      | |                          | |     |  ____(_) |          
+      | |     __ _ _   _ _ __   ___| |__   | |__   _| | ___  ___ 
+      | |    / _` | | | | '_ \ / __| '_ \  |  __| | | |/ _ \/ __|
+      | |___| (_| | |_| | | | | (__| | | | | |    | | |  __/\__ \
+      |______\__,_|\__,_|_| |_|\___|_| |_| |_|    |_|_|\___||___/ 
+-->
+
+ <!-- RealSense Cameras -->
+ <include file="$(find realsense2_camera)/launch/rs_camera.launch">
+ </include>
+
+<!-- Audio  -->
+ <include file="$(find audio_capture)/launch/capture.launch">
+ </include>
+
+<!-- FT sensor -->
+ <include file="$(find tams_wireless_ft)/launch/wireless_ft.launch">
+ </include>
+
+<!-- Plays audio we record out loud -->
+ <include file="$(find audio_play)/launch/play.launch">
+ </include>
+
+
+
+<!--   _   _           _           
+      | \ | |         | |          
+      |  \| | ___   __| | ___  ___ 
+      | . ` |/ _ \ / _` |/ _ \/ __|
+      | |\  | (_) | (_| |  __/\__ \
+      |_| \_|\___/ \__,_|\___||___/
+-->
+
+
+
+<!-- Synchronize data -->
+<node pkg="data_collection" type="synchronize.py" name="synchronize"/>
+<node pkg="data_collection" type="publish_key.py" name="publish_key"/>
+
+
+ <!-- Record rosbags-->
+ <!-- TODO: Should they be recorded in separate rosbags?-->
+ <group unless="$(arg disable_record)">
+
+      <!-- RealSense Camera -->
+      <node pkg="rosbag" type="record" name="rosbag_record_images"
+            args="record -o /home/peeling/data_collection/images /camera/color/image_raw /camera/depth/image_rect_raw /camera/aligned_depth_to_color/image_raw"
+            if="$(arg record_cameras)" 
+      />
+
+      <!-- Audio -->
+      <node pkg="rosbag" type="record" name="rosbag_record_audio"
+            args="record -o /home/peeling/data_collection/audio /audio/audio /audio/audio_stamped"
+            if="$(arg record_audio)" 
+      />
+
+      <!-- FT Sensor -->
+      <node pkg="rosbag" type="record" name="rosbag_record_ft"
+            args="record -o /home/peeling/data_collection/ft /forque/forqueSensor"
+            if="$(arg record_ft)" 
+      />
+
+      <!-- Annotations -->
+      <node pkg="rosbag" type="record" name="rosbag_record_key"
+            args="record -o /home/peeling/data_collection/key /key"
+            if="$(arg record_ft)" 
+      />
+
+
+      <!-- Synced Data -->
+      <node pkg="rosbag" type="record" name="rosbag_record_synced"
+            args="record -o /home/peeling/data_collection/synced /synced_data"
+            if="$(arg record_synced)" 
+      />
+
+</group>
+</launch>
