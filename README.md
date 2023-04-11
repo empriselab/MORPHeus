@@ -35,6 +35,6 @@ In the third row from left to right:
 - `rqt`
 
 In the fourth row from left to right:
-- Nothing is run currently but you should run the following: `rosbag record --all -O <fooditem_#>.bag`
+- Nothing is run currently but you should run the following: `rosbag record /audio/audio/ /forque/forqueSensor /key_continuous -O <fooditem_#>.bag`
 - `roscore`
 
