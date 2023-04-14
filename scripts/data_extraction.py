@@ -93,7 +93,7 @@ class DataExtractor:
 
     def store_data(self, key):
 
-        print("Saving data with key: ", key)
+        print("Storing data with key: ", key)
 
         ft_sensor_data_buffer = None
         audio_data_buffer = None
@@ -121,7 +121,7 @@ class DataExtractor:
 
         with self.dataset_lock:
             print(f"Number of datapoints: {len(self.dataset)}")
-            with open('peeling_data.pickle', 'wb') as handle:
+            with open('../data/peeling_data.pickle', 'wb') as handle:
                 pickle.dump(self.dataset, handle, protocol=pickle.HIGHEST_PROTOCOL)
 
         print("\nprogram exiting gracefully ...")
