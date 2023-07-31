@@ -34,9 +34,9 @@
  <include file="$(find audio_capture)/launch/capture.launch">
  </include>
 
-<!-- FT sensor -->
+<!-- FT sensor
  <include file="$(find tams_wireless_ft)/launch/wireless_ft.launch">
- </include>
+ </include> -->
 
 <!-- Plays audio we record out loud -->
  <include file="$(find audio_play)/launch/play.launch">
