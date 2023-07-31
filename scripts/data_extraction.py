@@ -20,7 +20,7 @@ from cv_bridge import CvBridge, CvBridgeError
 import tf2_ros
 from geometry_msgs.msg import Point, TransformStamped, WrenchStamped
 from visualization_msgs.msg import MarkerArray, Marker
-from std_msgs.msg import Float64MultiArray, Bool, String
+from std_msgs.msg import Float64MultiArray, Bool, String, Float32
 from data_collection.msg import StringStamped
 from audio_common_msgs.msg import AudioData
 from types import SimpleNamespace
@@ -33,8 +33,8 @@ class DataExtractor:
     def __init__(self):
         rospy.init_node('DataExtractor')
         
-        self.ft_sensor_lock = Lock()
-        self.ft_sensor_data_buffer = []
+        self.force_sensor_lock = Lock()
+        self.force_sensor_data_buffer = []
 
         self.audio_lock = Lock()
         self.audio_data_buffer = []
@@ -44,18 +44,18 @@ class DataExtractor:
 
         queue_size = 1
 
-        self.ft_sensor_sub = rospy.Subscriber('/forque/forqueSensor', WrenchStamped, self.ft_sensor_callback, queue_size = queue_size, buff_size = 65536*queue_size)
+        self.force_sensor_sub = rospy.Subscriber('force', Float32, self.force_sensor_callback, queue_size = queue_size, buff_size = 65536*queue_size)
         self.audio_sub = rospy.Subscriber('/audio/audio', AudioData, self.audio_callback, queue_size = queue_size, buff_size = 65536*queue_size)
 
         self.last_key_continuous_data = None
         self.key_continuous_sub = rospy.Subscriber('/key_continuous', StringStamped, self.key_continuous_callback, queue_size = queue_size, buff_size = 65536*queue_size)
 
-    def ft_sensor_callback(self, ft_sensor_msg):
+    def force_sensor_callback(self, force_sensor_msg):
 
-        data = [ft_sensor_msg.wrench.force.x, ft_sensor_msg.wrench.force.y, ft_sensor_msg.wrench.force.z, ft_sensor_msg.wrench.torque.x, ft_sensor_msg.wrench.torque.y, ft_sensor_msg.wrench.torque.z]
+        data = [force_sensor_msg.data]
    
-        with self.ft_sensor_lock:
-            self.ft_sensor_data_buffer.append(data)
+        with self.force_sensor_lock:
+            self.force_sensor_data_buffer.append(data)
 
             # if len(self.ft_sensor_data_buffer) > 125:
             #     self.ft_sensor_data_buffer.pop(0)
@@ -85,8 +85,8 @@ class DataExtractor:
 
         print("Clearing buffers...")
 
-        with self.ft_sensor_lock:
-            self.ft_sensor_data_buffer.clear()
+        with self.force_sensor_lock:
+            self.force_sensor_data_buffer.clear()
         
         with self.audio_lock:
             self.audio_data_buffer.clear()
@@ -95,22 +95,22 @@ class DataExtractor:
 
         print("Storing data with key: ", key)
 
-        ft_sensor_data_buffer = None
+        force_sensor_data_buffer = None
         audio_data_buffer = None
 
-        with self.ft_sensor_lock:
-            ft_sensor_data_buffer = deepcopy(self.ft_sensor_data_buffer)
+        with self.force_sensor_lock:
+            force_sensor_data_buffer = deepcopy(self.force_sensor_data_buffer)
 
         with self.audio_lock:
             audio_data_buffer = deepcopy(self.audio_data_buffer)
 
-        if ft_sensor_data_buffer is not None and audio_data_buffer is not None:
+        if force_sensor_data_buffer is not None and audio_data_buffer is not None:
 
-            print("Number of ft_sensor frames: ", len(ft_sensor_data_buffer))
+            print("Number of force_sensor frames: ", len(force_sensor_data_buffer))
             print("Number of audio frames: ", len(audio_data_buffer))
 
             with self.dataset_lock:
-                self.dataset.append({'haptic':ft_sensor_data_buffer, 'audio': audio_data_buffer, 'key': key})
+                self.dataset.append({'haptic':force_sensor_data_buffer, 'audio': audio_data_buffer, 'key': key})
 
         else:
             print("No data to save")

@@ -30,9 +30,9 @@ def keys():
     # Setting anonymous to False so only one instance can run at a time
     rospy.init_node('keypress',anonymous=False)
 
-    # Service Proxy to Tare (zero out FT sensor)
+    # Service Proxy to Tare (zero out force sensor)
     reset_bias = rospy.ServiceProxy(
-        'wireless_ft/reset_bias', Empty)
+        'tare', Empty)
 
     with Input(keynames='curses') as input_generator:
 

@@ -6,6 +6,7 @@ from geometry_msgs.msg import WrenchStamped
 from sensor_msgs.msg import Image
 from data_collection.msg import SyncedDataStamped, StringStamped
 import message_filters
+from std_msgs.msg import Float64MultiArray, Bool, String, Float32
 
 import threading 
 # Declraing a lock
@@ -25,14 +26,14 @@ class DataCollection:
         self.img_color_sub = message_filters.Subscriber("/camera/color/image_raw", Image)
         self.img_depth_sub = message_filters.Subscriber("/camera/depth/image_rect_raw", Image)
         self.img_aligned_sub = message_filters.Subscriber("/camera/aligned_depth_to_color/image_raw", Image)
-        self.ft_sub = message_filters.Subscriber("/forque/forqueSensor", WrenchStamped)
+        self.force_sub = message_filters.Subscriber("force", Float32)
         self.key_sub = message_filters.Subscriber("/key_continuous", StringStamped)
         self.sync_sub = message_filters.ApproximateTimeSynchronizer([self.img_color_sub, 
                                                                     self.img_depth_sub, 
                                                                     self.img_aligned_sub,
                                                                     # self.audio_sub,
                                                                     self.audio_stamped_sub,
-                                                                    self.ft_sub,
+                                                                    self.force_sub,
                                                                     self.key_sub,
                                                                     ],
                                                                queue_size=10, slop=.1)
@@ -42,11 +43,11 @@ class DataCollection:
         self.pub = rospy.Publisher("/synced_data", SyncedDataStamped, queue_size=10)
 
     # TODO: Add ft_msg back
-    def sync_callback(self, img_color_msg, img_depth_msg, img_aligned_msg, audio_stamped_msg, ft_msg, key_msg):
+    def sync_callback(self, img_color_msg, img_depth_msg, img_aligned_msg, audio_stamped_msg, force_msg, key_msg):
 
         # Publish synced data 
         #  
-        synced_msg = SyncedDataStamped(img_color_msg, img_depth_msg, img_aligned_msg, audio_stamped_msg, ft_msg, key_msg)
+        synced_msg = SyncedDataStamped(img_color_msg, img_depth_msg, img_aligned_msg, audio_stamped_msg, force_msg, key_msg)
         self.pub.publish(synced_msg)
     
 
