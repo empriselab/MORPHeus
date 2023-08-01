@@ -21,7 +21,7 @@ void setup(){
   scale.tare();
   node_handle.initNode();
   node_handle.advertise(force_publisher);
-  nh.advertiseService(server);
+  node_handle.advertiseService(server);
 }
 
 void tare_callback(){
