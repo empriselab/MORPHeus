@@ -10,11 +10,17 @@ ros::NodeHandle node_handle;
 std_msgs::Float32 force_msg;
 // std_msgs::UInt16 raw_msg;
 
+FX29K scale(FX29K0, 0010, &Wire);
+
+void tare_callback(){
+    scale.tare();
+}
+
 ros::Publisher force_publisher("force", &force_msg);
 ros::ServiceServer<Empty::Request, Empty::Response> server("tare",&tare_callback);
 
 
-FX29K scale(FX29K0, 0010, &Wire);
+
 void setup(){
   Wire.begin();
   Serial.begin(9600);
@@ -24,9 +30,6 @@ void setup(){
   node_handle.advertiseService(server);
 }
 
-void tare_callback(){
-    scale.tare();
-}
 void loop(){
   // @TODO(Luke) change lbs to kg or N
   uint16_t raw = scale.getRawBridgeData();
