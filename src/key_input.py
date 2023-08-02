@@ -12,15 +12,19 @@ from std_srvs.srv import Empty
 ################################
 
 key_dict = {
-    "p": "[p] - Peeling over peeled area", 
-    "u": "[u] - Peeling over unpeeled area", 
-    "r": "[r] - Not peeling"
+    "1": "[1] - Sliding over unpeeled area",
+    "2": "[2] - Peeling over unpeeled area", 
+    "3": "[3] - Peeling over peeled area", 
+    "4": "[4] - Sliding over peeled area",
+    "0": "[0] - Not peeling"
     }
 
 print(f"Use the following keys to annotate the associated actions"\
-    f"\n\t {key_dict['p']}"\
-    f"\n\t {key_dict['u']}"\
-    f"\n\t {key_dict['r']}"\
+    f"\n\t {key_dict['1']}"\
+    f"\n\t {key_dict['2']}"\
+    f"\n\t {key_dict['3']}"\
+    f"\n\t {key_dict['4']}"\
+    f"\n\t {key_dict['0']}"\
     f"\n\n To EXIT press <CTRL+C> and then <ESC>")
 
 def keys():

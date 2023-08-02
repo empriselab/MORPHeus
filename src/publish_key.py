@@ -12,7 +12,7 @@ from data_collection.msg import StringStamped
 
 # TODO: Add /key_1 to synced data
 
-string = "r"
+string = "0"
 
 def keys():
     global string

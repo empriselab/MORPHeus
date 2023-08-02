@@ -34,16 +34,16 @@ void setup(){
 }
 
 void loop(){
-  // @TODO(Luke) change lbs to kg or N
   uint16_t raw = scale.getRawBridgeData();
-  float lb = scale.getPounds();
+  float kg = scale.getKilograms();
 
-  force_msg.data = lb;
+  force_msg.data = kg;
 //   raw_msg.data = raw;
 
-  Serial.print("Lbs:");
-  Serial.print(lb);
+  Serial.print("Kgs:");
+  Serial.print(kg);
   Serial.println(",");
+  force_publisher.publish(&force_msg);
   node_handle.spinOnce();
-  delay(50);
+ // delay(50);
 }
