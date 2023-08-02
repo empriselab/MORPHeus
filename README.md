@@ -27,7 +27,7 @@ In case anything goes wrong here are commands that are run in each window.  All 
 
 In the second row moving left to right are the following commands:
 - `rostopic echo /audio/audio`
-- `rostopic echo /forque/forqueSensor`
+- `rostopic echo /force`
 - `rostopic echo /key_continuous`
 
 In the third row from left to right:
@@ -35,6 +35,6 @@ In the third row from left to right:
 - `rqt`
 
 In the fourth row from left to right:
-- Nothing is run currently but you should run the following: `rosbag record /audio/audio/ /forque/forqueSensor /key_continuous -O <fooditem_#>.bag`
+- Nothing is run currently but you should run the following: `rosbag record /audio/audio/ /force /key_continuous -O <fooditem_#>.bag`
 - `roscore`
 

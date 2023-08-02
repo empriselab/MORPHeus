@@ -77,7 +77,7 @@
 
       <!-- FT Sensor -->
       <node pkg="rosbag" type="record" name="rosbag_record_ft"
-            args="record -o /home/peeling/data_collection/ft /forque/forqueSensor"
+            args="record -o /home/peeling/data_collection/ft /force"
             if="$(arg record_ft)" 
       />
 
