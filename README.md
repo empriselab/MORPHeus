@@ -23,7 +23,7 @@ This will open a terminator with every panel in the correct directory, the neces
 
 In case anything goes wrong here are commands that are run in each window.  All of these are in the ~/peeling_ws/ directory and have sourced devel/setup.bash (with the expection of rosbag record which is in ~/data/) starting from the top:
 
-- `roslaunch data_collection collect_data.launch`
+- `roslaunch data_collection collect_data.launch` (If doesn't work, make sure you've used `conda activate peeling` to activate env)
 
 In the second row moving left to right are the following commands:
 - `rostopic echo /audio/audio`
