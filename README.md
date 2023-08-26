@@ -27,14 +27,16 @@ In case anything goes wrong here are commands that are run in each window.  All 
 
 In the second row moving left to right are the following commands:
 - `rostopic echo /audio/audio`
-- `rostopic echo /force`
-- `rostopic echo /key_continuous`
+- `rosrun rosserial_python serial_node.py /dev/ttyACM0` (the middle top window)
+- `rostopic echo /force` (the middle lower window)
+- `rostopic echo /key_continuous` (If this says 'message not built', please make sure that you've sourced the workspace)
 
 In the third row from left to right:
-- `rosrun data_collection key_input.py`
+- `rosrun data_collection key_input.py` (If this doesn't work, please make sure that workspace is sourced, and you've used `conda activate peeling` to activate the environment
 - `rqt`
 
 In the fourth row from left to right:
-- Nothing is run currently but you should run the following: `rosbag record /audio/audio/ /force /key_continuous -O <fooditem_#>.bag`
+- Nothing is run currently but you should run the following: `rosbag record /audio/audio/ /force /key_continuous -O <fooditem_#>.bag` (disregard this for now)
+- `rosrun data_collection publish_key.py` (If not working, make sure to source the workspace, and you've used `conda activate peeling` to activate this env)
 - `roscore`
 
