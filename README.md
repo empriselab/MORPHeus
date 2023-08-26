@@ -36,7 +36,7 @@ In the third row from left to right:
 - `rqt`
 
 In the fourth row from left to right:
-- Nothing is run currently but you should run the following: `rosbag record /audio/audio/ /force /key_continuous -O <fooditem_#>.bag` (disregard this for now)
+- (disregard this for now, look at the next bullet point) Nothing is run currently but you should run the following: `rosbag record /audio/audio/ /force /key_continuous -O <fooditem_#>.bag` 
 - `rosrun data_collection publish_key.py` (If not working, make sure to source the workspace, and you've used `conda activate peeling` to activate this env)
 - `roscore`
 
