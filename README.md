@@ -27,7 +27,7 @@ In case anything goes wrong here are commands that are run in each window.  All 
 
 In the second row moving left to right are the following commands:
 - `rostopic echo /audio/audio`
-- `rosrun rosserial_python serial_node.py /dev/ttyACM0` (the middle top window)
+- `rosrun rosserial_python serial_node.py /dev/ttyACM0` (the middle top window) **IF ERROR "Device or resource busy: '/dev/ttyACM0': run `fuser -k /dev/ttyACM0`**
 - `rostopic echo /force` (the middle lower window)
 - `rostopic echo /key_continuous` (If this says 'message not built', please make sure that you've sourced the workspace)
 
