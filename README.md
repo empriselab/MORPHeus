@@ -1,4 +1,4 @@
-# peeling-data-collection
+# MORPHeus
 
 ## Purpose
 
